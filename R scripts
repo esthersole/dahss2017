@@ -1,0 +1,11 @@
+#Genera un data frame titulat met_degas_complete agafant les dades de MetObjects que coincideixen amb les columnes Artist Alpha Sort i Title
+met_degas_complete<-data.frame(MetObjects$`Artist Alpha Sort`,MetObjects$Title)
+
+#Genera un nou data frame titulat edges_degas a partir d'un subset de l'objecte anterior, tot agafant la columna Artist Alpha Sort i prenent-ne només els elements que coincideixen amb el criteri que s'introdueix
+edges_degas<-subset(met_degas_complete, met_degas_complete$MetObjects..Artist.Alpha.Sort.=="Degas, Edgar")
+
+Reanomenar els encapçalaments de les columnes del data frame anterior
+names(edges_degas)<-c("Source","Target")
+
+Exportar el data frame generat en format CSV
+write.csv(edges_degas,file="edges_degas.csv")
