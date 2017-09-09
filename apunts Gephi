@@ -1,0 +1,3 @@
+#Import spreadsheet: prestar atenció si el separador són comes, punts i comes i altres, definir si és una edge table o una node table i el charset que va bé > next > create missing nodes.
+
+#Es pot jugar amb la finestra layout per triar patrons (algorismes) de repartiment dels nodes
