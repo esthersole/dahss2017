@@ -1,2 +1,2 @@
 # dahss2017
-R notes
+Notes about R and Gephi
