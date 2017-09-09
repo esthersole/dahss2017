@@ -9,3 +9,11 @@ names(edges_degas)<-c("Source","Target")
 
 #Exportar el data frame generat en format CSV
 write.csv(edges_degas,file="edges_degas.csv")
+
+---------
+
+#Subset de MetObjects que formen part de la col·lecció dels Cloisters
+Selection<-subset(MetObjects, MetObjects$'Department'=="The Cloisters")
+
+#Quedar-nos només amb les columnes Title i Credit Line del subset anterior
+Selection_filtered<-data.frame(Selection$`Title`,Selection$`Credit Line`)
