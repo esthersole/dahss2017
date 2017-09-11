@@ -17,3 +17,94 @@ Selection<-subset(MetObjects, MetObjects$'Department'=="The Cloisters")
 
 #Quedar-nos només amb les columnes Title i Credit Line del subset anterior
 Selection_filtered<-data.frame(Selection$`Title`,Selection$`Credit Line`)
+
+-------------------------------------------------------------------------------------------
+# COOL STUFF
+# How many rows are there?
+nrow(MetObjects)
+
+# How many columns are there?
+ncol(MetObjects)
+
+# How many objects are public domain?
+nr_pd<-nrow(subset(MetObjects),`Is Public Domain`==TRUE) #this one doesn't work but I do't know why
+nr_pd<-nrow(subset(MetObjects, MetObjects$`Is Public Domain`==TRUE)) #This one returns bad results but I don't know why
+
+# Percentage
+percent<-nr_pd/nr_all*100
+percent<-round(percent,digits=2)
+message(percent)
+
+# What is the averge -the mean- production date?
+mean(MetObjects$'Object Begin Date')
+mean(MetObjects$'Object End Date')
+
+# Median
+median(MetObjects$'Object Begin Date')
+median_obd<-median(MetObjects$'Object Begin Date')
+median_oed<-median(MetObjects$'Object End Date')
+mean_od<-mean(c(median_obd,median_oed))
+message("Median begin date is: ",median_obd, "\nMedian End Date: ", median_oed, "\nAverage is: ", mean_od)
+
+# Average production year in new column
+MetObjects$average_date=round((MetObjects$'Object End Date'+MetObjects$'Object Begin Date')/2,digits=0)
+
+# Delete column
+MetObjects$average_date<-NULL
+
+# List of lines only once -similar to text facets-. This case showing all media and all departments that exist in the original dataset
+unique(MetObjects$Medium)
+unique(MetObjects$Department)
+
+# Write unique list in new table -data frame-
+departments<-data.frame(unique(MetObjects$Department))
+
+# Summary -aggregates unique appearences and counts them-. You can limit it with the maxsum command
+summary(as.factor(MetObjects$Medium))
+summary(as.factor(MetObjects$Medium), maxsum=25)
+
+# Alternative notation to show the first row
+MetObjects[1,]
+
+# grep function, partial matches
+degas_objects<-MetObjects[grep("Degas, Edgar",MetObjects$`Artist Alpha Sort`),]
+
+# Subset: Medium Photography, showing the number of rows
+photography<-subset(MetObjects,MetObjects$Department=="Photographs")
+nrow(photography)
+
+# Certain rows of the previous search
+photography2<-subset(photography,
+                     'Artist Begin Date'>1800 &&
+                     'Artist End Date'>2000,
+                     select = c(`Artist Alpha Sort`,Title, Medium))
+
+# Plot summary of table in a pie chart. I es pot exportar!! I es pot limitar el número de representats. Fer una ullada a la help per trobar diversos paràmetres que es poden utilitzar, també un comando -col- permet triar colors, posar rainbow com a exemple
+summary(as.factor(photography$`Artist Display Name`))
+pie(summary(as.factor(photography$`Artist Display Name`)))
+pie(summary(as.factor(photography$`Artist Display Name`), maxsum = 10))
+
+# Plot summary of objects clustered per media in a pie chart
+summary(as.factor(photography$Medium))
+pie(summary(as.factor(photography$Medium)))
+pie(summary(as.factor(photography$Medium), maxsum = 10))
+
+# Install a library - tools > install packages
+library(plotrix)
+
+# Interesting packages
+# plyr
+# dplyr
+# tidyr
+# rrefine -> client per l'OpenRefine
+# lubridate -> dates
+# EBImage -> advanced graphics and image processing
+# magick -> advanced graphics and image processing
+# shiny -> explore data on a website
+# ggvis -> interactive graphics for exploratory data analysis
+# igraph -> network analysis and visualisation
+
+# Histograma. Breaks significa granularity, detall. Mirar la help per altres detalls
+hist(photography$`Object End Date`,
+     xlim=c(1800,2000),
+     breaks = 200)
